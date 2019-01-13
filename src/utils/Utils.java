@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.security.*;
+import java.math.*;
 import model.Conn;
 
 /**
@@ -152,5 +154,19 @@ public class Utils {
 			return config.getString( title );
 		
 		return config.getString( "noTitle" );
+	}
+	
+	/**
+	 * Codificar string para MD5
+	 * 
+	 * @param string
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 */
+	public static String md5( String string ) throws NoSuchAlgorithmException {
+		MessageDigest md5 = MessageDigest.getInstance( "MD5" );
+		md5.update( string.getBytes(), 0, string.length() );
+		
+		return new BigInteger( 1, md5.digest() ).toString( 16 );
 	}
 }

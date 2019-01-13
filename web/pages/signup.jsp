@@ -1,4 +1,4 @@
-<%@page import="utils.Utils,java.util.Map,java.util.HashMap" %>
+<%@page import="java.util.Map,java.util.HashMap" %>
 <%
 	// Obter erros do formulário em lista.
 	Map<String, String> errors = new HashMap<String, String>();
@@ -80,7 +80,7 @@
 					<tr>
 						<td colspan="2">
 							<div class="to-left">
-								<a href="/entrar" class="button">Fazer login</a>
+								<a href="./entrar" class="button">Fazer login</a>
 							</div>
 							<input type="submit" value="Enviar" class="button" />
 						</td>

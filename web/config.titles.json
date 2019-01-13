@@ -6,6 +6,7 @@
 		"install": "Instalação da Aplicação",
 		"createUser": "Criação de usuário",
 		"dashboard": "Página Inicial",
-		"signup": "Cadastro de Usuário"
+		"signup": "Cadastro de Usuário",
+		"signin": "Entrar"
 	}
 }

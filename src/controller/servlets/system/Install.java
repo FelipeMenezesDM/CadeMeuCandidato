@@ -23,6 +23,8 @@ import utils.Utils;
 
 /**
  * Servlet implementation class install
+ * 
+ * @author Felipe Menezes <contato@felipemenezes.com.br>
  */
 @WebServlet("/instalacao")
 public class Install extends HttpServlet {
