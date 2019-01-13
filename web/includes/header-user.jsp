@@ -11,5 +11,5 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/fontawesome.css" />
 </head>
 <body>
-<div class="main">
+<div class="main user-forms">
 	<div class="container">

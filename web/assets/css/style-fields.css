@@ -1,10 +1,23 @@
 input,
 select,
-textarea {
+textarea,
+a {
 	outline: none;
 	-webkit-transition: border-color .3s, background-color .3s, transform .1s;
 	-moz-transition: border-color .3s, background-color .3s transform .1s;
 	transition: border-color .3s, background-color .3s, transform .1s;
+}
+
+input.check-field {
+	margin: 0 4px 0 0;
+	position: relative;
+	top: 2px;
+}
+
+input.check-field + strong {
+	font-size: 14px;
+	color: #444;
+	user-select: none;
 }
 
 input.text-field {
@@ -26,6 +39,7 @@ input.text-field:focus {
 	border-color: #09C;
 }
 
+a.button,
 input.button {
 	cursor: pointer;
 	border: none;
@@ -34,6 +48,17 @@ input.button {
 	background: #09C;
 	border-radius: 3px;
 	padding: 10px 14px;
+}
+
+a.button {
+	background: transparent;
+	color: #09C;
+	border: 2px solid #09C;
+	padding: 8px 12px;
+}
+
+a.button:hover {
+	border-color: #06C;
 }
 
 input.button.secondary {
@@ -49,6 +74,7 @@ input.button.secondary:hover {
 	background: #BBB;
 }
 
+a.button:active,
 input.button:active {
 	-webkit-transform: scale(0.9);
 	-moz-transform: scale(0.9);

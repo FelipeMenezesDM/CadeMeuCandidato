@@ -5,6 +5,7 @@
 		"dbConnection": "Erro de conexão com a Base de Dados",
 		"install": "Instalação da Aplicação",
 		"createUser": "Criação de usuário",
-		"dashboard": "Página Inicial"
+		"dashboard": "Página Inicial",
+		"signup": "Cadastro de Usuário"
 	}
 }

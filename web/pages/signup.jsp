@@ -1,4 +1,4 @@
-<%@page import="java.util.Map,java.util.HashMap" %>
+<%@page import="utils.Utils,java.util.Map,java.util.HashMap" %>
 <%
 	// Obter erros do formulário em lista.
 	Map<String, String> errors = new HashMap<String, String>();
@@ -6,16 +6,16 @@
 	if( request.getAttribute( "errors" ) != null )
 		errors = (Map) request.getAttribute( "errors" );
 %>
-<%@include file="../includes/header-error.jsp" %>
+<%@include file="../includes/header-user.jsp" %>
 
-		<div class="error-body">
-			<h1 class="title">Criação de Usuário</h1>
-			<p class="description">Crie um usuário inicial para administrar o sistema.</p>
+		<div class="user-form">
+			<h2 class="title">Cadastro de Usuários</h2>
+			<p class="description">Crie sua conta para acessar o sistema.</p>
 		<%
 			if( errors.containsKey( "form" ) )
 				out.print( "<p class=\"callback-error\">" + errors.get( "form" ) + "</p>" );
 		%>
-			<form action="instalacao" method="post">
+			<form action="cadastro" method="post">
 				<table>
 					<tr>
 						<th><label for="name">Nome completo <span class="required">*</span></label></th>
@@ -67,15 +67,26 @@
 						%>
 						</td>
 					</tr>
+					<tr>
+						<th>&nbsp;</th>
+						<td>
+							<label>
+								<input type="checkbox" class="check-field" value="1" name="remember"<%= ( request.getParameter( "remember" ) != null ?" checked" : "" ) %> />
+								<strong>Mantenha-me conectado</strong>
+							</label>
+						</td>
+					</tr>
 					<tr><td colspan="2">&nbsp;</td></tr>
 					<tr>
 						<td colspan="2">
-							<input type="submit" value="Finalizar" class="button" />
-							<input type="submit" value="Voltar" name="back" class="button secondary" />
+							<div class="to-left">
+								<a href="/entrar" class="button">Fazer login</a>
+							</div>
+							<input type="submit" value="Enviar" class="button" />
 						</td>
 					</tr>
 				</table>
 			<form>
 		</div>
 		
-<%@include file="../includes/footer-error.jsp" %>
+<%@include file="../includes/footer-user.jsp" %>

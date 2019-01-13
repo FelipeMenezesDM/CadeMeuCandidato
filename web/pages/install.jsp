@@ -1,17 +1,16 @@
-<%@page import="utils.Utils,java.util.Map,java.util.HashMap" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="java.util.Map,java.util.HashMap" %>
 <%
-	// Obter erros do formul√°rio em lista.
+	// Obter erros do formul·rio em lista.
 	Map<String, String> errors = new HashMap<String, String>();
 
 	if( request.getAttribute( "errors" ) != null )
 		errors = (Map) request.getAttribute( "errors" );
 %>
-
 <%@include file="../includes/header-error.jsp" %>
 
 		<div class="error-body">
-			<h1 class="title">Preparando a instala√ß√£o</h1>
-			<p class="description">O arquivo de configura√ß√£o n√£o foi encontrado, por isso ser√° necess√°rio realizar a instala√ß√£o da aplica√ß√£o. Por favor, preencha os campos abaixo para configurar a conex√£o com a Base de Dados.</p>
+			<h1 class="title">Preparando a instalaÁ„o</h1>
+			<p class="description">O arquivo de configuraÁ„o n„o foi encontrado, por isso ser· necess·rio realizar a instalaÁ„o da aplicaÁ„o. Por favor, preencha os campos abaixo para configurar a conex„o com a Base de Dados.</p>
 			<%
 				if( errors.containsKey( "form" ) )
 					out.print( "<p class=\"callback-error\">" + errors.get( "form" ) + "</p>" );
@@ -49,7 +48,7 @@
 						</td>
 					</tr>
 					<tr>
-						<th><label for="user">Usu√°rio <span class="required">*</span></label></th>
+						<th><label for="user">Usu·rio <span class="required">*</span></label></th>
 						<td>
 							<input type="text" id="user" name="user" class="text-field" value="<%= ( request.getParameter( "user" ) != null ? request.getParameter( "user" ).toString() : "" ) %>" />
 						<%
@@ -69,7 +68,7 @@
 						</td>
 					</tr>
 					<tr><td colspan="2">&nbsp;</td></tr>
-					<tr><td colspan="2"><input type="submit" value="Pr√≥ximo" class="button" /></td></tr>
+					<tr><td colspan="2"><input type="submit" value="PrÛximo" class="button" /></td></tr>
 				</table>
 			<form>
 		</div>

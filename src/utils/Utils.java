@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import control.Conn;
+import model.Conn;
 
 /**
  * Métodos auxiliares da aplicação.

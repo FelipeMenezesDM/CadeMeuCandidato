@@ -1,4 +1,4 @@
-package servlets.system;
+package controller.servlets.system;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
-import control.Conn;
+import model.Conn;
 import utils.Utils;
 
 /**
