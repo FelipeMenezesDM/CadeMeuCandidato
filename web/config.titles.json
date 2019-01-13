@@ -3,6 +3,8 @@
 		"noTitle": "Sem título",
 		"error404": "Página não encontrada",
 		"dbConnection": "Erro de conexão com a Base de Dados",
+		"install": "Instalação da Aplicação",
+		"createUser": "Criação de usuário",
 		"dashboard": "Página Inicial"
 	}
 }

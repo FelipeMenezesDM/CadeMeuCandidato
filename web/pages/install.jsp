@@ -6,21 +6,17 @@
 	if( request.getAttribute( "errors" ) != null )
 		errors = (Map) request.getAttribute( "errors" );
 %>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Instalação da Aplicação</title>
-	<link rel="stylesheet" href="<%= Utils.getHomeUrl( request, "assets/css/style-errors.css" ) %>" />
-	<link rel="stylesheet" href="<%= Utils.getHomeUrl( request, "assets/css/style-fields.css" ) %>" />
-</head>
-<body>
-<div class="main">
-	<div class="container">
+
+<%@include file="../includes/header-error.jsp" %>
+
 		<div class="error-body">
-			<h1>Preparando a instalação</h1>
-			<p>O arquivo de configuração não foi encontrado, por isso será necessário realizar a instalação da aplicação. Por favor, preencha os campos abaixo para configurar a conexão com a Base de Dados.</p>
-			<form action="install" method="post">
+			<h1 class="title">Preparando a instalação</h1>
+			<p class="description">O arquivo de configuração não foi encontrado, por isso será necessário realizar a instalação da aplicação. Por favor, preencha os campos abaixo para configurar a conexão com a Base de Dados.</p>
+			<%
+				if( errors.containsKey( "form" ) )
+					out.print( "<p class=\"callback-error\">" + errors.get( "form" ) + "</p>" );
+			%>
+			<form action="instalacao" method="post">
 				<table>
 					<tr>
 						<th><label for="host">Host</label></th>
@@ -43,7 +39,7 @@
 						</td>
 					</tr>
 					<tr>
-						<th><label for="dbName">Banco de Dados <span style="color:red;">*</span></span></label></th>
+						<th><label for="dbName">Base de Dados <span class="required">*</span></label></th>
 						<td>
 							<input type="text" id="dbName" name="dbName" class="text-field" value="<%= ( request.getParameter( "host" ) != null ? request.getParameter( "dbName" ).toString() : "" ) %>" />
 						<%
@@ -53,7 +49,7 @@
 						</td>
 					</tr>
 					<tr>
-						<th><label for="user">Usuário <span style="color:red;">*</span></label></th>
+						<th><label for="user">Usuário <span class="required">*</span></label></th>
 						<td>
 							<input type="text" id="user" name="user" class="text-field" value="<%= ( request.getParameter( "user" ) != null ? request.getParameter( "user" ).toString() : "" ) %>" />
 						<%
@@ -63,9 +59,9 @@
 						</td>
 					</tr>
 					<tr>
-						<th><label for="password">Senha <span style="color:red;">*</span></label></th>
+						<th><label for="password">Senha <span class="required">*</span></label></th>
 						<td>
-							<input type="password" id="password" name="password" class="text-field" value="<%= ( request.getParameter( "password" ) != null ? request.getParameter( "password" ).toString() : "" ) %>" />
+							<input type="password" id="password" name="password" class="text-field" />
 						<%
 							if( errors.containsKey( "password" ) )
 								out.print( "<p class=\"error\">" + errors.get( "password" ) + "</p>" );
@@ -77,7 +73,5 @@
 				</table>
 			<form>
 		</div>
-	</div>
-</div>
-</body>
-</html>
+		
+<%@include file="../includes/footer-error.jsp" %>

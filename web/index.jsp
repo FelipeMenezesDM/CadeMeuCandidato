@@ -4,10 +4,11 @@
 	// Verificar status de conexão com a base de dados.
 	if( !Utils.checkDBConnection() ) {
 		if( !Utils.fileExists( "config.init.json" ) ) {
-			response.sendRedirect( request.getContextPath() + "/install" );
+			Utils.setTitle( "install" );
+			response.sendRedirect( request.getContextPath() + "/instalacao" );
 		} else {
 			Utils.setTitle( "dbConnection" );
-			pageContext.include( "errors/dbConnection.jsp" );
+			pageContext.include( "pages/errors/errorDBConnection.jsp" );
 		}
 		
 		return;
@@ -26,7 +27,7 @@
 	// Página não existente.
 	else if( !Utils.fileExists( "pages/" + thisPage + ".jsp" ) ) {
 		Utils.setTitle( "error404" );
-		pageContext.include( "errors/error404.jsp" );
+		pageContext.include( "pages/errors/error404.jsp" );
 	}
 	// Nevagação.
 	else{

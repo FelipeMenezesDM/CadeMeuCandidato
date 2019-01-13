@@ -38,19 +38,27 @@ html {
 	box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.error-body h1 {
+.error-body h1.title {
 	color: #222;
 	margin: 0;
 }
 
-.error-body p {
+.error-body p.description {
 	color: #666;
 }
 
-.error-body div {
+.error-body div.icon {
 	text-align: center;
 	font-size: 40px;
 	color: #DDD;
+}
+
+.error-body .callback-error {
+	background: #ffc8c8;
+	color: #a93b3b;
+	padding: 10px;
+	border-radius: 3px;
+	font-size: 14px;
 }
 
 .error-body hr {
@@ -58,6 +66,10 @@ html {
 	background: #E4E4E4;
 	border: none;
 	margin: 20px 0;
+}
+
+.required {
+	color: red;
 }
 
 
@@ -82,4 +94,8 @@ table td {
 
 table .button {
 	float: right;
+}
+
+table .button.secondary {
+	float: left;
 }

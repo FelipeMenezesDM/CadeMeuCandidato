@@ -36,8 +36,17 @@ input.button {
 	padding: 10px 14px;
 }
 
+input.button.secondary {
+	background: #DDD;
+	color: #444;
+}
+
 input.button:hover {
 	background: #06C;
+}
+
+input.button.secondary:hover {
+	background: #BBB;
 }
 
 input.button:active {
