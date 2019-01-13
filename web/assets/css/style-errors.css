@@ -59,3 +59,27 @@ html {
 	border: none;
 	margin: 20px 0;
 }
+
+
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+table th {
+	text-align: right;
+	width: 25%;
+	padding: 5px 15px 10px 0;
+	font-size: 13px;
+	color: #444;
+	vertical-align: top;
+}
+
+table td {
+	padding-bottom: 15px;
+}
+
+table .button {
+	float: right;
+}

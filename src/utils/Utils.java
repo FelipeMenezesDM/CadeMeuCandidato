@@ -61,10 +61,21 @@ public class Utils {
 	 * @return JSONObject
 	 */
 	public static JSONObject getConfig( String configKey ) {
+		return getConfig( configKey, "config.init" );
+	}
+	
+	/**
+	 * Obter configurações em formato JSON, informando o arquivo de configuração.
+	 * 
+	 * @param configKey
+	 * @param configFile
+	 * @return JSONObject
+	 */
+	public static JSONObject getConfig( String configKey, String configFile ) {
 		String json = "{}";
 		
 		try {
-			json = new JSONParser().parse( new FileReader( getWorkDir() + "config.json" ) ).toString();
+			json = new JSONParser().parse( new FileReader( getWorkDir() + configFile + ".json" ) ).toString();
 		} catch ( Exception e ) {}
 		
 		JSONObject config = new JSONObject( json ).getJSONObject( configKey );
@@ -78,7 +89,7 @@ public class Utils {
 	 */
 	public static boolean checkDBConnection() {
 		// Verificar se o arquivo de conexão existe.
-		if( !fileExists( "config.json" ) )
+		if( !fileExists( "config.init.json" ) )
 			return false;
 		
 		// Realizar conexão com a base com os parâmetros de configuração do arquivo.
@@ -135,7 +146,7 @@ public class Utils {
 	 * @return string
 	 */
 	public static String getTitle() {
-		JSONObject config = getConfig( "pageTitles" );
+		JSONObject config = getConfig( "pageTitles", "config.titles" );
 		
 		if( config.has( title ) )
 			return config.getString( title );

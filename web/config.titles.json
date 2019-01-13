@@ -1,0 +1,8 @@
+{
+	"pageTitles": {
+		"noTitle": "Sem título",
+		"error404": "Página não encontrada",
+		"dbConnection": "Erro de conexão com a Base de Dados",
+		"dashboard": "Página Inicial"
+	}
+}

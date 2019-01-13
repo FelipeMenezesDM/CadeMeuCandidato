@@ -3,8 +3,7 @@
 <%
 	// Verificar status de conexão com a base de dados.
 	if( !Utils.checkDBConnection() ) {
-		if( !Utils.fileExists( "config.json" ) ) {
-			Utils.setTitle( "install" );
+		if( !Utils.fileExists( "config.init.json" ) ) {
 			response.sendRedirect( request.getContextPath() + "/install" );
 		} else {
 			Utils.setTitle( "dbConnection" );

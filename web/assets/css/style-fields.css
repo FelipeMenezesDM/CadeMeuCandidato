@@ -1,0 +1,53 @@
+input,
+select,
+textarea {
+	outline: none;
+	-webkit-transition: border-color .3s, background-color .3s, transform .1s;
+	-moz-transition: border-color .3s, background-color .3s transform .1s;
+	transition: border-color .3s, background-color .3s, transform .1s;
+}
+
+input.text-field {
+	font-size: 16px;
+	color: #666;
+	border: 1px solid #BBB;
+	padding: 8px 12px;
+	border-radius: 3px;
+	width: 100%;
+	display: block;
+	box-sizing: border-box;
+}
+
+input.text-field:hover {
+	border-color: #777;
+}
+
+input.text-field:focus {
+	border-color: #09C;
+}
+
+input.button {
+	cursor: pointer;
+	border: none;
+	font-size: 12px;
+	color: #FFF;
+	background: #09C;
+	border-radius: 3px;
+	padding: 10px 14px;
+}
+
+input.button:hover {
+	background: #06C;
+}
+
+input.button:active {
+	-webkit-transform: scale(0.9);
+	-moz-transform: scale(0.9);
+	transform: scale(0.9);
+}
+
+.error {
+	color: red !important;
+	font-size: 11px;
+	margin: 5px 0 0 0;
+}
