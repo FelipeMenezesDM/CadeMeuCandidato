@@ -7,33 +7,28 @@ import java.sql.*;
  * 
  * @author Felipe Menezes <contato@felipemenezes.com.br>
  */
-public class Conection {
+public class Conn {
 	private final String DRIVER;
 	private final String URL;
-	private String host;
-	private String instance;
-	private String user;
-	private String password;
-	private int port;
 	private Connection connection = null;
 	
 	/**
 	 * Conexão com host e porta padrão.
 	 * 
-	 * @param instance Nome da instância
+	 * @param dbName   Nome da base de dados.
 	 * @param user     Nome de usuário da instância.
 	 * @param password Senha para a instância.
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public Conection( String instance, String user, String password ) throws ClassNotFoundException, SQLException {
-		this( instance, user, password, "localhost", 1433 );
+	public Conn( String dbName, String user, String password ) throws ClassNotFoundException, SQLException {
+		this( dbName, user, password, "localhost", 1433 );
 	}
 
 	/**
 	 * Conexão com host e porta informados.
 	 * 
-	 * @param instance Nome da instância
+	 * @param instance Nome da base de dados.
 	 * @param user     Nome de usuário da instância.
 	 * @param password Senha para a instância.
 	 * @param host     Nome do host.
@@ -41,15 +36,9 @@ public class Conection {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public Conection( String instance, String user, String password, String host, int port ) throws ClassNotFoundException, SQLException {
-		this.instance = instance;
-		this.user = user;
-		this.password = password;
-		this.host = host;
-		this.port = port;
-		
+	public Conn( String dbName, String user, String password, String host, int port ) throws ClassNotFoundException, SQLException {
 		DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-		URL = "jdbc:sqlserver://" + host + ":" + port + ";";
+		URL = "jdbc:sqlserver://" + host + ":" + port + "; databaseName=" + dbName + "; user=" + user + "; password=" + password + ";";
 		
 		makeConnection();
 	}
@@ -62,11 +51,12 @@ public class Conection {
 	 */
 	private void makeConnection() throws SQLException, ClassNotFoundException {
 		Class.forName( DRIVER );
-		connection = DriverManager.getConnection( URL + instance, user, password );
+		connection = DriverManager.getConnection( URL );
 	}
 	
 	/**
 	 * Obter objeto da conexão com a instância.
+	 * 
 	 * @return Connection
 	 */
 	public Connection getConnection() {
@@ -74,7 +64,22 @@ public class Conection {
 	}
 	
 	/**
+	 * Estado da conexão com a base de dados.
+	 * 
+	 * @return boolean
+	 */
+	public boolean getConnectionStatus() {
+		try {
+			if( !connection.isClosed() )
+				return true;
+		} catch (Exception e) {}
+		
+		return false;
+	}
+	
+	/**
 	 * Encerrar a conecão com a instância.
+	 * 
 	 * @throws SQLException
 	 */
 	public void close() throws SQLException {
