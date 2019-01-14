@@ -47,14 +47,14 @@ input.button {
 	color: #FFF;
 	background: #09C;
 	border-radius: 3px;
-	padding: 10px 14px;
+	padding: 11px 14px;
 }
 
 a.button {
 	background: transparent;
 	color: #09C;
 	border: 2px solid #09C;
-	padding: 8px 12px;
+	padding: 9px 12px;
 }
 
 a.button:hover {

@@ -2,11 +2,9 @@ package utils;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -90,7 +88,9 @@ public class Utils {
 		
 		try {
 			json = new JSONParser().parse( new FileReader( getWorkDir() + configFile + ".json" ) ).toString();
-		} catch ( Exception e ) {}
+		} catch ( Exception e ) {
+			System.out.println( "ALert -> " + e.getMessage() + "; " + Utils.class.getCanonicalName() + ".getConfig();" );
+		}
 		
 		JSONObject config = new JSONObject( json ).getJSONObject( configKey );
 		
@@ -116,6 +116,7 @@ public class Utils {
 			
 			conn.close();
 		} catch (Exception e) {
+			System.out.println( "Alert -> " + e.getMessage() + "; " + Utils.class.getCanonicalName() + ".checkDBConnection();" );
 			return false;
 		}
 		
@@ -237,6 +238,7 @@ public class Utils {
 			conn.close();
 			return status;
 		} catch( Exception e ) {
+			System.out.println( "Error -> " + e.getMessage() + "; " + Utils.class.getCanonicalName() + ".checkUserSession();" );
 			return false;
 		}
 	}

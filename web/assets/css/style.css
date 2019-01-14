@@ -1,0 +1,202 @@
+/**
+ * Estilos gerais para a aplicação.
+ *
+ * Author: Felipe Menezes <contato@felipemenezes.com.br>
+ */
+
+body,
+html {
+	margin: 0;
+	padding: 0;
+	font-family: Arial;
+	background: #EEE;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+a {
+	outline: none;
+	text-decoration: none;
+}
+
+.clear {
+	clear: both;
+}
+
+/* CABECALHO */
+.header {
+	position: fixed;
+	height: 50px;
+	background: #09C;
+	box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0 20px;
+}
+
+.header-wrapper {
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+.header .info {
+	float: left;
+	margin: 5px 0 0 0;
+	font-size: 30px;
+	font-family: monospace;
+}
+
+.header .info a {
+	color: #FFF;
+	word-spacing: -12px;
+}
+
+.user-display {
+	float: right;
+	position: relative;
+	margin-top: 7px;
+}
+
+.user-toogle-opts {
+	color: #FFF;
+	font-size: 14px;
+	border: 2px solid #FFF;
+	border-radius: 3px;
+	padding: 8px 15px;
+	display: inline-block;
+}
+
+.user-toogle-opts:hover {
+	background: rgba(255, 255, 255, 0.25);
+}
+
+.user-toogle-opts:after {
+	content: "";
+	float: right;
+	display: inline-block;
+	border: 5px solid transparent;
+	border-top-color: #FFF;
+	margin: 6px 0 0 8px;
+}
+
+.user-options {
+	position: absolute;
+	background: #FFF;
+	top: 100%;
+	padding: 10px 0;
+	list-style: none;
+	margin: 6px 0 0 0;
+	width: 200px;
+	right: 0;
+	border-radius: 3px;
+	box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+	display: none;
+}
+
+.user-options:before {
+	content: "";
+	border: 5px solid transparent;
+	border-bottom-color: #FFF;
+	position: absolute;
+	top: -10px;
+	right: 25px;
+}
+
+.user-options a {
+	display: block;
+	padding: 7px 20px;
+	color: #444;
+	font-size: 14px;
+}
+
+.user-options a:hover {
+	background: #EEE;
+}
+
+
+/* Conteudo */
+.wrapper {
+	margin-top: 70px;
+	margin: 60px 20px 0 20px;
+}
+
+.container {
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+.filter {
+	margin: 0 -5px 20px -5px;
+}
+
+.filter .col {
+	float: left;
+	box-sizing: border-box;
+	padding: 0 5px;
+}
+
+.filter .col.nome {
+	width: 46%;
+}
+
+.filter .col.partido,
+.filter .col.uf,
+.filter .col.pesquisar {
+	width: 18%;
+}
+
+.filter select {
+	width: 100%;
+	font-size: 18px;
+	color: #666;
+	padding: 6px 10px;
+	border-radius: 3px;
+}
+
+.filter .col.pesquisar .button {
+	box-sizing: border-box;
+	width: 100%;
+} 
+
+/* Registros */
+table.list {
+	border-collapse: collapse;
+	width: 100%;
+	border-radius: 4px;
+	box-shadow: 0 3px 3px rgba(0,0,0,0.1);
+	overflow: hidden;
+}
+
+table.list thead {
+	background: #DDD;
+	color: #444;
+}
+
+table.list thead th {
+	text-align: left;
+	font-size: 14px;
+}
+
+table.list th,
+table.list td {
+	padding: 10px 15px;
+}
+
+table.list th.center,
+table.list td.center {
+	text-align: center;
+}
+
+table.list tbody {
+	background: #FFF;
+}
+
+/* RODAPE */
+.footer {
+	font-size: 12px;
+	text-align: center;
+	padding: 10px 20px;
+	margin-top: 20px;
+	color: #666;
+}

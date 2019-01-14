@@ -1,5 +1,5 @@
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@page import="utils.Utils" %>
+<%@page import="utils.Utils,controller.BuildContent" %>
 <%
 	// Verificar status de conexão com a base de dados.
 	if( !Utils.checkDBConnection() ) {
@@ -15,6 +15,7 @@
 	}
 
 
+	BuildContent.setRequest( request );
 	String thisPage = request.getParameter( "p" );
 
 	// Página padrão.
