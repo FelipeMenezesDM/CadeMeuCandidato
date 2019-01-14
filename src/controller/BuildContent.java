@@ -64,6 +64,28 @@ public class BuildContent {
 	}
 	
 	/**
+	 * Obter lista de parlamentares.
+	 * 
+	 * @return
+	 */
+	public static JSONObject getParlamentares() {
+		String nome = "", partido = "", uf = "";
+		
+		if( request.getParameter( "nome" ) != null )
+			nome = request.getParameter( "nome" );
+		
+		if( request.getParameter( "partido" ) != null )
+			partido = request.getParameter( "partido" );
+		
+		if( request.getParameter( "uf" ) != null )
+			uf = request.getParameter( "uf" );
+		
+		JSONObject parlamentares = getJSONData( "https://dadosabertos.camara.leg.br/api/v2/deputados?nome=" + nome + "&siglaUf=" + uf + "&siglaPartido=" + partido + "&pagina=1&itens=5&ordem=ASC&ordenarPor=nome" );
+		
+		return parlamentares;
+	}
+	
+	/**
 	 * Obter objeto JSON a partir de uma URL.
 	 * 
 	 * @param url

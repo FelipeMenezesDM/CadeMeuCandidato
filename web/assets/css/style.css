@@ -117,8 +117,7 @@ a {
 
 /* Conteudo */
 .wrapper {
-	margin-top: 70px;
-	margin: 60px 20px 0 20px;
+	margin: 70px 20px 0 20px;
 }
 
 .container {
@@ -192,6 +191,16 @@ table.list tbody {
 	background: #FFF;
 }
 
+table.list tbody td {
+	border: 1px solid #DDD;
+	font-size: 14px;
+	color: #444;
+}
+
+table.list tbody td a.button {
+	display: inline-block;
+	padding: 4px 6px;
+}
 /* RODAPE */
 .footer {
 	font-size: 12px;
