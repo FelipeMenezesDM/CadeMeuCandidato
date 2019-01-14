@@ -45,6 +45,12 @@ public class Signup extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType( "text/html; charset=UTF-8" );
 		
+		// Se existir sessão de usuário, redirecionar para a página inicial.
+		if( Utils.checkUserSession(request) ) {
+			response.sendRedirect( request.getContextPath() );
+			return;
+		}
+		
 		Utils.setTitle( "signup" );
 		request.getRequestDispatcher( "/pages/signup.jsp" ).include(request, response);
 	}

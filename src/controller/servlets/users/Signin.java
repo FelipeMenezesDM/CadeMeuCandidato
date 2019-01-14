@@ -44,6 +44,12 @@ public class Signin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType( "text/html; charset=UTF-8" );
 		
+		// Se existir sessão de usuário, redirecionar para a página inicial.
+		if( Utils.checkUserSession(request) ) {
+			response.sendRedirect( request.getContextPath() );
+			return;
+		}
+		
 		Utils.setTitle( "signin" );
 		request.getRequestDispatcher( "/pages/signin.jsp" ).include(request, response);
 	}
@@ -90,7 +96,7 @@ public class Signin extends HttpServlet {
 					session.setAttribute( "user", user );
 					
 					// Persistir sessão do usuário
-					if( request.getAttribute( "remember" ) != null ) {
+					if( request.getParameter( "remember" ) != null ) {
 						Cookie usernameCookie = new Cookie( "username", username );
 						Cookie passwordCookie = new Cookie( "password", password );
 						
@@ -102,6 +108,8 @@ public class Signin extends HttpServlet {
 				} else {
 					errors.put( "form", "Não foi possível realizar login, verifique os dados informados e tente novamente." );
 				}
+				
+				conn.close();
 			} catch (Exception e) {
 				System.out.println( "Error -> " + e.getMessage() + "; " + this.getClass().getCanonicalName() + ".doPost();" );
 				errors.put( "form", "Não foi possível realizar login, verifique os dados informados e tente novamente." );

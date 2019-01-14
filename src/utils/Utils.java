@@ -2,12 +2,23 @@ package utils;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import controller.javabeans.Login;
+import controller.javabeans.User;
+import controller.user.validateUserLogin;
+
 import java.security.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.math.*;
 import model.Conn;
 
@@ -18,6 +29,7 @@ import model.Conn;
  */
 public class Utils {
 	private static String title = "noTitle";
+	private static User user;
 	
 	/**
 	 * Verificar se um arquivo existe a partir do diretório do projeto no servidor.
@@ -168,5 +180,73 @@ public class Utils {
 		md5.update( string.getBytes(), 0, string.length() );
 		
 		return new BigInteger( 1, md5.digest() ).toString( 16 );
+	}
+	
+	/**
+	 * Verificar se existe sessão de usuário ativa.
+	 * 
+	 * @param request
+	 * @return boolean
+	 */
+	public static boolean checkUserSession( HttpServletRequest request ) {
+		user = null;
+		
+		try {
+			HttpSession session = request.getSession();
+			Cookie[] cookies = request.getCookies();
+			String username = "";
+			String password = "";
+			boolean status = false;
+			
+			// Obter credenciais a partir de uma sessão.
+			if( session.getAttribute( "user" ) != null ) {
+				Login user = (Login) session.getAttribute( "user" );
+				
+				username = user.getUsername();
+				password = user.getPassword();
+			}
+			// Obter credenciais a partir de cookies.
+			else if( cookies != null ) {
+				for( Cookie cookie : cookies ) {
+					if( cookie.getName().equals( "username" ) )
+						username = cookie.getValue();
+					else if( cookie.getName().equals( "password" ) )
+						password = cookie.getValue();
+				}
+			} else {
+				return false;
+			}
+			
+			JSONObject config = getConfig( "DBConnection" );
+			Connection conn = new Conn( config.getString( "dbName" ), config.getString( "user" ), config.getString( "password" ), config.getString( "host" ), config.getInt( "port" ) ).getConnection();
+			validateUserLogin login = new validateUserLogin( conn, username, password );
+			ResultSet userInfo = login.getResults();
+			
+			if( userInfo.next() ) {
+				User userSession = new User();
+				
+				userSession.setName( userInfo.getString( "name" ) );
+				userSession.setEmail( userInfo.getString( "email" ) );
+				userSession.setUsername( userInfo.getString( "username" ) );
+				
+				user =  userSession;
+				
+				return true;
+			}
+			
+			conn.close();
+			return status;
+		} catch( Exception e ) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Obter informações do usuário.
+	 * 
+	 * @return User
+	 */
+	public static User getUser() {
+		return user;
 	}
 }

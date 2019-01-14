@@ -19,6 +19,11 @@
 
 	// Página padrão.
 	if( thisPage == null || thisPage.trim().isEmpty() ) {
+		if( !Utils.checkUserSession(request) ) {
+			response.sendRedirect( request.getContextPath() + "/entrar" );
+			return;
+		}
+		
 		Utils.setTitle( "dashboard" );
 		pageContext.include( "includes/header.jsp" );
 		pageContext.include( "pages/dashboard.jsp" );
@@ -31,6 +36,11 @@
 	}
 	// Nevagação.
 	else{
+		if( !Utils.checkUserSession(request) ) {
+			response.sendRedirect( request.getContextPath() + "/entrar" );
+			return;
+		}
+		
 		Utils.setTitle( thisPage.trim() );
 		pageContext.include( "includes/header.jsp" );
 		pageContext.include( "pages/" + thisPage.trim() + ".jsp" );
