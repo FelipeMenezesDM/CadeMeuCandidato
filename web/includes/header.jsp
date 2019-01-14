@@ -14,8 +14,8 @@
 	<div class="header">
 		<div class="header-wrapper">
 			<h1 class="info"><a href=".">CADÊ MEU CANDIDATO?</a></h1>
-			<div class="user-display">
-				<a href="#" class="user-toogle-opts" onClick="return false;"><%= Utils.getUser().getName() %></a>
+			<div class="user-display" tabindex="0">
+				<a class="user-toogle-opts"><%= Utils.getUser().getName() %></a>
 				<ul class="user-options">
 					<li><a href="./sair">Sair</a></li>
 				</ul>

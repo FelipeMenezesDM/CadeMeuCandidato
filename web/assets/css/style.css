@@ -56,9 +56,11 @@ a {
 	float: right;
 	position: relative;
 	margin-top: 7px;
+	outline: none;
 }
 
 .user-toogle-opts {
+	cursor: pointer;
 	color: #FFF;
 	font-size: 14px;
 	border: 2px solid #FFF;
@@ -67,8 +69,8 @@ a {
 	display: inline-block;
 }
 
-.user-toogle-opts:hover,
-.user-toogle-opts:focus {
+.user-display:focus:hover .user-toogle-opts,
+.user-display:focus:focus .user-toogle-opts {
 	background: rgba(255, 255, 255, 0.25);
 }
 
@@ -106,7 +108,7 @@ a {
 	transition: transform .3s, opacity .2s;
 }
 
-.user-toogle-opts:focus + .user-options {
+.user-display:focus .user-options {
 	-webkit-opacity: 1;
 	-moz-opacity: 1;
 	opacity: 1;
