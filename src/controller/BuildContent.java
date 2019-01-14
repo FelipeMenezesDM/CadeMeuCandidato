@@ -3,11 +3,19 @@ package controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Map;
 import java.io.InputStreamReader;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import controller.javabeans.Parlamentar;
+import model.Conn;
 import utils.Utils;
 
 /**
@@ -19,6 +27,7 @@ public class BuildContent {
 	private static JSONObject partidos;
 	private static JSONObject ufs;
 	private static HttpServletRequest request;
+	private static Parlamentar parlamentar;
 	
 	/**
 	 * Definir objeto de requisição.
@@ -85,6 +94,41 @@ public class BuildContent {
 		JSONObject parlamentares = getJSONData( "https://dadosabertos.camara.leg.br/api/v2/deputados?nome=" + nome + "&siglaUf=" + uf + "&siglaPartido=" + partido + "&pagina=" + Utils.getCurrentPage(request) + "&itens=5&ordem=ASC&ordenarPor=nome" );
 		
 		return parlamentares;
+	}
+	
+	/**
+	 * Obter informações do parlamentar.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static Parlamentar getParlamentar( int id ) {
+		HttpSession session = request.getSession();
+		
+		if( session.getAttribute( "parlamentares" ) != null ) {
+			Map<Integer, Parlamentar> parlamentares = (Map) session.getAttribute( "parlamentares" );
+			
+			if( parlamentares.containsKey( id ) )
+				return (Parlamentar) parlamentares.get( id );
+		}
+		
+		try {
+			JSONObject config = Utils.getConfig( "DBConnection" );
+			Connection conn = new Conn( config.getString( "dbName" ), config.getString( "user" ), config.getString( "password" ), config.getString( "host" ), config.getInt( "port" ) ).getConnection();
+			PreparedStatement stm = conn.prepareStatement( "SELECT * FROM parlamentares WHERE id = ? " );
+			
+			stm.setInt( 1, id );
+			
+			ResultSet result = stm.executeQuery();
+			
+			if( result.next() ) {
+				parlamentar = new Parlamentar();
+				parlamentar.setNomeParlamentarAtual( result.getString( "nomeParlamentarAtual" ) );
+			}
+			
+		} catch (Exception e) {}
+		
+		return parlamentar;
 	}
 	
 	/**
