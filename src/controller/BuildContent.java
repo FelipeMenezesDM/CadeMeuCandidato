@@ -2,15 +2,18 @@ package controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Map;
+import java.io.File;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -78,18 +81,19 @@ public class BuildContent {
 	 * Obter lista de parlamentares.
 	 * 
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static JSONObject getParlamentares() {
+	public static JSONObject getParlamentares() throws UnsupportedEncodingException {
 		String nome = "", partido = "", uf = "";
 		
 		if( request.getParameter( "nome" ) != null )
-			nome = request.getParameter( "nome" );
+			nome = URLEncoder.encode( request.getParameter( "nome" ), "UTF-8" );
 		
 		if( request.getParameter( "partido" ) != null )
-			partido = request.getParameter( "partido" );
+			partido = URLEncoder.encode( request.getParameter( "partido" ), "UTF-8" );
 		
 		if( request.getParameter( "uf" ) != null )
-			uf = request.getParameter( "uf" );
+			uf = URLEncoder.encode( request.getParameter( "uf" ), "UTF-8" );
 		
 		JSONObject parlamentares = getJSONData( "https://dadosabertos.camara.leg.br/api/v2/deputados?nome=" + nome + "&siglaUf=" + uf + "&siglaPartido=" + partido + "&pagina=" + Utils.getCurrentPage(request) + "&itens=5&ordem=ASC&ordenarPor=nome" );
 		
@@ -104,14 +108,18 @@ public class BuildContent {
 	 */
 	public static Parlamentar getParlamentar( int id ) {
 		HttpSession session = request.getSession();
+		Map<Integer, Parlamentar> parlamentares = null;
 		
 		if( session.getAttribute( "parlamentares" ) != null ) {
-			Map<Integer, Parlamentar> parlamentares = (Map) session.getAttribute( "parlamentares" );
+			parlamentares = (Map) session.getAttribute( "parlamentares" );
 			
 			if( parlamentares.containsKey( id ) )
 				return (Parlamentar) parlamentares.get( id );
 		}
 		
+		/**
+		 * Obter parlamentar a partir da base de dados.
+		 */
 		try {
 			JSONObject config = Utils.getConfig( "DBConnection" );
 			Connection conn = new Conn( config.getString( "dbName" ), config.getString( "user" ), config.getString( "password" ), config.getString( "host" ), config.getInt( "port" ) ).getConnection();
@@ -123,10 +131,30 @@ public class BuildContent {
 			
 			if( result.next() ) {
 				parlamentar = new Parlamentar();
+				parlamentar.setId( result.getInt( "id" ) );
 				parlamentar.setNomeParlamentarAtual( result.getString( "nomeParlamentarAtual" ) );
+				parlamentar.setDataNascimento( result.getString( "dataNascimento" ) );
+				parlamentar.setSexo( result.getString( "sexo" ) );
+				parlamentar.setSituacaoNaLegislaturaAtual( result.getString( "situacaoNaLegislaturaAtual" ) );
+				parlamentar.setFoto( "" );
+				
+				parlamentares.put( id, parlamentar );
+				session.setAttribute( "parlamentares" , parlamentares );
+				
+				return parlamentar;
+			} else {
 			}
 			
+			conn.close();
+			
 		} catch (Exception e) {}
+		
+		try {
+			File fXmlFile = new File( "http://www.camara.leg.br/SitCamaraWS/Deputados.asmx/ObterDetalhesDeputado?ideCadastro=178957&numLegislatura=" );
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		}catch( Exception e ) {
+			
+		}
 		
 		return parlamentar;
 	}

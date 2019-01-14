@@ -36,7 +36,7 @@ a {
 }
 
 .header-wrapper {
-	max-width: 1000px;
+	max-width: 1200px;
 	margin: 0 auto;
 }
 
@@ -147,7 +147,7 @@ a {
 }
 
 .container {
-	max-width: 1000px;
+	max-width: 1200px;
 	margin: 0 auto;
 }
 
@@ -182,7 +182,7 @@ a {
 .filter .col.pesquisar .button {
 	box-sizing: border-box;
 	width: 100%;
-} 
+}
 
 /* Registros */
 table.list {
@@ -191,6 +191,7 @@ table.list {
 	border-radius: 4px;
 	box-shadow: 0 3px 3px rgba(0,0,0,0.1);
 	overflow: hidden;
+	background: #FFF;
 }
 
 table.list thead {
@@ -213,11 +214,8 @@ table.list td.center {
 	text-align: center;
 }
 
-table.list tbody {
-	background: #FFF;
-}
-
-table.list tbody td {
+table.list tbody td,
+table.list tfoot td {
 	border: 1px solid #DDD;
 	font-size: 14px;
 	color: #444;
@@ -227,6 +225,16 @@ table.list tbody td a.button {
 	display: inline-block;
 	padding: 4px 6px;
 }
+
+table.list tfoot h4 {
+	text-align: center;
+	color: #999;
+	margin: 0;
+	font-size: 14px;
+	line-height: 30px;
+}
+
+
 /* RODAPE */
 .footer {
 	font-size: 12px;
@@ -249,7 +257,7 @@ table.list tbody td a.button {
 	background: #09C;
 }
 
-.pages:hover {
+a.pages:hover {
 	background: #06C;
 }
 

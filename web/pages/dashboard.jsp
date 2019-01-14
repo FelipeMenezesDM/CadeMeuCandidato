@@ -2,7 +2,7 @@
 <div class="filter">
 	<form method="get">
 		<div class="col nome">
-			<input type="text" class="text-field" name="nome" placeholder="Pesquise um candidato:" value="<%= ( request.getParameter( "nome" ) != null ? request.getParameter( "nome" ) : "" ) %>" />
+			<input type="text" class="text-field" name="nome" placeholder="Pesquise um Parlamentar:" value="<%= ( request.getParameter( "nome" ) != null ? request.getParameter( "nome" ) : "" ) %>" />
 		</div>
 		<div class="col partido">
 			<select name="partido">
@@ -68,7 +68,7 @@
 		JSONObject p;
 		
 		if( parlamentares.isEmpty() ) {
-			out.print( "<tr><td colspan=\"5\" class=\"center\">Não a dados para exibição</td></tr>" );
+			out.print( "<tr><td colspan=\"5\" class=\"center\">Não há dados para exibição</td></tr>" );
 		}else{
 			int index = ( currentPage - 1 ) * 5;
 			
@@ -86,7 +86,7 @@
 		}
 	%>
 	</tbody>
-	<tfooter>
+	<tfoot>
 		<tr>
 			<td colspan="5">
 			<%
@@ -114,10 +114,14 @@
 				if( issetNextPage ) {
 					out.print( "<a href=\"" + Utils.addQuery( "pagina", ( currentPage + 1 ) + "", request ) + "\" class=\"pages next\"><i class=\"fas fa-arrow-right\"></i></a>" );
 				}else{
-					out.print( "<span class=\"pages next\"><i class=\"fas fa-next\"></i></span>" );
+					out.print( "<span class=\"pages next\"><i class=\"fas fa-arrow-right\"></i></span>" );
 				}
+				
+				// Mostrar página atual.
+				if( !parlamentares.isEmpty() )
+					out.print( "<h4>Página " + currentPage + "</h4>" );
 			%>
 			</td>
 		</th>
-	</tfooter>
+	</tfoot>
 </table>
