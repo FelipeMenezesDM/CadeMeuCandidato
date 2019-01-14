@@ -17,6 +17,7 @@ import controller.user.validateUserLogin;
 import java.security.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Enumeration;
 import java.math.*;
 import model.Conn;
 
@@ -250,5 +251,49 @@ public class Utils {
 	 */
 	public static User getUser() {
 		return user;
+	}
+	
+	/**
+	 * Obter número da página atual.
+	 * @param request
+	 * @return
+	 */
+	public static int getCurrentPage( HttpServletRequest request ) {
+		if( request.getParameter( "pagina" ) == null )
+			return 1;
+		
+		try {
+			return Math.max( Integer.parseInt( request.getParameter( "pagina" ).toString() ), 1 );
+		} catch (Exception e) {
+			return 1;
+		}
+	}
+	
+	/**
+	 * Adicionar ou modificar parâmetros em QueryString
+	 * @param query
+	 * @param value
+	 * @param request
+	 * @return
+	 */
+	public static String addQuery( String query, String value, HttpServletRequest request ) {
+		Enumeration<String> params = request.getParameterNames();
+		String queryString = "";
+		String queryIt = "";
+		
+		while( params.hasMoreElements()) {
+			queryIt = params.nextElement().toString();
+			queryString += ( queryString.isEmpty() ? "?" : "&" ) + queryIt + "=";
+			
+			if( queryIt.equals( query ) )
+				queryString += value;
+			else
+				queryString += request.getParameter( queryIt ).toString();
+		}
+		
+		if( request.getParameter( query ) == null )
+			queryString += ( queryString.isEmpty() ? "?" : "&" ) + query + "=" + value;
+		
+		return queryString;
 	}
 }

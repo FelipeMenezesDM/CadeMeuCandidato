@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import utils.Utils;
+
 /**
  * Gerar conteúdo para a aplicação.
  * 
@@ -80,7 +82,7 @@ public class BuildContent {
 		if( request.getParameter( "uf" ) != null )
 			uf = request.getParameter( "uf" );
 		
-		JSONObject parlamentares = getJSONData( "https://dadosabertos.camara.leg.br/api/v2/deputados?nome=" + nome + "&siglaUf=" + uf + "&siglaPartido=" + partido + "&pagina=1&itens=5&ordem=ASC&ordenarPor=nome" );
+		JSONObject parlamentares = getJSONData( "https://dadosabertos.camara.leg.br/api/v2/deputados?nome=" + nome + "&siglaUf=" + uf + "&siglaPartido=" + partido + "&pagina=" + Utils.getCurrentPage(request) + "&itens=5&ordem=ASC&ordenarPor=nome" );
 		
 		return parlamentares;
 	}

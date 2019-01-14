@@ -1,4 +1,4 @@
-<%@page import="controller.BuildContent,org.json.JSONObject,org.json.JSONArray" %>
+<%@page import="utils.Utils,controller.BuildContent,org.json.JSONObject,org.json.JSONArray" %>
 <div class="filter">
 	<form method="get">
 		<div class="col nome">
@@ -52,6 +52,7 @@
 <table class="list">
 	<thead>
 		<tr>
+			<th width="1%">#</th>
 			<th>Nome</th>
 			<th width="15%" class="center">Partido</th>
 			<th width="15%" class="center">UF</th>
@@ -60,17 +61,22 @@
 	</thead>
 	<tbody>
 	<%
+		int currentPage = Utils.getCurrentPage( request );
 		// Obter lista de parlamentares.
-		JSONArray parlamentares = (JSONArray) BuildContent.getParlamentares().get( "dados" );
+		JSONObject parlamentaresJSON = BuildContent.getParlamentares();
+		JSONArray parlamentares = (JSONArray) parlamentaresJSON.get( "dados" );
 		JSONObject p;
 		
 		if( parlamentares.isEmpty() ) {
 			out.print( "<tr><td colspan=\"5\" class=\"center\">Não a dados para exibição</td></tr>" );
 		}else{
+			int index = ( currentPage - 1 ) * 5;
+			
 			for( Object parlamentar : parlamentares ) {
 				p = (JSONObject) parlamentar; 
 				
 				out.print("<tr>");
+				out.print("<td>" + ( ++index ) + "</td>");
 				out.print("<td>" + p.getString( "nome" ) + "</td>");
 				out.print("<td class=\"center\">" + p.getString( "siglaPartido" ) + "</td>");
 				out.print("<td class=\"center\">" + p.getString( "siglaUf" ) + "</td>");
@@ -80,5 +86,38 @@
 		}
 	%>
 	</tbody>
-	<tfooter></tfooter>
+	<tfooter>
+		<tr>
+			<td colspan="5">
+			<%
+				JSONArray links = (JSONArray) parlamentaresJSON.get( "links" );
+				boolean issetNextPage = false, issetPrevPage = false;
+			
+				// Verificar se página existem.
+				for( Object link : links ) {
+					String rel = ((JSONObject) link).getString( "rel" );
+					
+					if( rel.equals( "next" ) )
+						issetNextPage = true;
+					else if( rel.equals( "previous" ) )
+						issetPrevPage = true;
+				}
+				
+				// Página anterior.
+				if( issetPrevPage ) {
+					out.print( "<a href=\"" + Utils.addQuery( "pagina", ( currentPage - 1 ) + "", request ) + "\" class=\"pages prev\"><i class=\"fas fa-arrow-left\"></i></a>" );
+				}else{
+					out.print( "<span class=\"pages prev\"><i class=\"fas fa-arrow-left\"></i></span>" );
+				}
+				
+				// Próxima página
+				if( issetNextPage ) {
+					out.print( "<a href=\"" + Utils.addQuery( "pagina", ( currentPage + 1 ) + "", request ) + "\" class=\"pages next\"><i class=\"fas fa-arrow-right\"></i></a>" );
+				}else{
+					out.print( "<span class=\"pages next\"><i class=\"fas fa-next\"></i></span>" );
+				}
+			%>
+			</td>
+		</th>
+	</tfooter>
 </table>
