@@ -141,7 +141,7 @@ public class Utils {
 	 * @return string
 	 */
 	public static String getHomeUrl( HttpServletRequest request, String fileContext ) {
-		String url = request.getRequestURL().toString().replaceFirst( request.getRequestURI(), "" );
+		String url = request.getRequestURL().toString().replaceFirst( request.getRequestURI(), "" ).replaceFirst( "http:", "" );
 		String context = request.getContextPath();
 		
 		return url + context + "/" + fileContext;
