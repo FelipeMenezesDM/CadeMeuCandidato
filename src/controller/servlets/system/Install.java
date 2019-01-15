@@ -245,7 +245,7 @@ public class Install extends HttpServlet {
 	private boolean createTables( Connection conn ) {
 		try {
 			Statement stm = conn.createStatement();
-			String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users'";
+			String sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'users' AND TABLE_NAME = N'parlamentares'";
 			
 			// Verificar se tabela de usuários já existe.
 			if( stm.executeQuery( sql ).next() )
@@ -261,7 +261,20 @@ public class Install extends HttpServlet {
 						  "username VARCHAR(30) NOT NULL CONSTRAINT uq_username UNIQUE, " +
 						  "password VARCHAR(32) NOT NULL " +
 					  ") " +
-				  "END";
+				  "END ";
+			
+			sql += "IF NOT EXISTS ( SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'parlamentares' ) " +
+				   "BEGIN " +
+						"CREATE TABLE parlamentares ( " +
+							"id INT PRIMARY KEY, " +
+							"nomeParlamentarAtual VARCHAR(120) NOT NULL, " +
+							"dataNascimento VARCHAR(10) NOT NULL, " +
+							"sexo CHAR NOT NULL, " +
+							"partidoAtual VARCHAR(70) NOT NULL, " +
+							"situacaoNaLegislaturaAtual VARCHAR(20) NOT NULL, " +
+							"foto TEXT NOT NULL " +
+						") " +
+					"END";
 			
 			stm.executeUpdate( sql );
 			return true;

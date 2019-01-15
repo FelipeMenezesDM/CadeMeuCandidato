@@ -67,6 +67,15 @@
 						%>
 						</td>
 					</tr>
+					<tr>
+						<th>&nbsp;</th>
+						<td>
+							<label>
+								<input type="checkbox" class="check-field" value="1" name="remember"<%= ( request.getParameter( "remember" ) != null ? " checked" : "" ) %> />
+								<strong>Mantenha-me conectado</strong>
+							</label>
+						</td>
+					</tr>
 					<tr><td colspan="2">&nbsp;</td></tr>
 					<tr>
 						<td colspan="2">
