@@ -7,6 +7,7 @@
 		"createUser": "Criação de usuário",
 		"dashboard": "Página Inicial",
 		"signup": "Cadastro de Usuário",
-		"signin": "Entrar"
+		"signin": "Entrar",
+		"consultar": "Consultar Parlamentar"
 	}
 }

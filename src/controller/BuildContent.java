@@ -2,6 +2,7 @@ package controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.net.URL;
@@ -9,13 +10,16 @@ import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import controller.javabeans.Parlamentar;
 import model.Conn;
@@ -106,10 +110,20 @@ public class BuildContent {
 	 * @param id
 	 * @return
 	 */
-	public static Parlamentar getParlamentar( int id ) {
+	public static Parlamentar getParlamentar() {
 		HttpSession session = request.getSession();
-		Map<Integer, Parlamentar> parlamentares = null;
+		Map<Integer, Parlamentar> parlamentares = new HashMap<Integer, Parlamentar>();
 		
+		int id = 0;
+		
+		// Obter id do parlamentar.
+		try {
+			id = Integer.parseInt( request.getParameter( "id" ).toString() );
+		} catch (Exception e) {
+			System.out.println( "Error -> " + e.getMessage() + "; " + Utils.class.getCanonicalName() + ".getParlamentar();" );
+		}
+		
+		// Verificar se o parlamentar está em cache.
 		if( session.getAttribute( "parlamentares" ) != null ) {
 			parlamentares = (Map) session.getAttribute( "parlamentares" );
 			
@@ -129,31 +143,35 @@ public class BuildContent {
 			
 			ResultSet result = stm.executeQuery();
 			
+			// Verificar se parlamentar existe na base de dados.
 			if( result.next() ) {
 				parlamentar = new Parlamentar();
 				parlamentar.setId( result.getInt( "id" ) );
 				parlamentar.setNomeParlamentarAtual( result.getString( "nomeParlamentarAtual" ) );
 				parlamentar.setDataNascimento( result.getString( "dataNascimento" ) );
 				parlamentar.setSexo( result.getString( "sexo" ) );
+				parlamentar.setPartidoAtual( result.getString( "partidoAtual" ) );
 				parlamentar.setSituacaoNaLegislaturaAtual( result.getString( "situacaoNaLegislaturaAtual" ) );
 				parlamentar.setFoto( "" );
 				
+				// Armazenar informações do parlamentar em cache.
 				parlamentares.put( id, parlamentar );
 				session.setAttribute( "parlamentares" , parlamentares );
-				
-				return parlamentar;
-			} else {
 			}
 			
 			conn.close();
 			
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			System.out.println( "Error -> " + e.getMessage() + "; " + Utils.class.getCanonicalName() + ".getParlamentar();" );
+		}
 		
-		try {
-			File fXmlFile = new File( "http://www.camara.leg.br/SitCamaraWS/Deputados.asmx/ObterDetalhesDeputado?ideCadastro=178957&numLegislatura=" );
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		}catch( Exception e ) {
-			
+		// Obter informações a partir de arquivo XML.
+		parlamentar = getParlamentarFromXML( id );
+		
+		// Armazenar informações do parlamentar em cache.
+		if( parlamentar != null ) {
+			parlamentares.put( id, parlamentar );
+			session.setAttribute( "parlamentares" , parlamentares );
 		}
 		
 		return parlamentar;
@@ -176,5 +194,69 @@ public class BuildContent {
 		
 		JSONObject data = new JSONObject( json );
 		return data;
+	}
+	
+	/**
+	 * Obter infomações do parlamentar a partir de arquivo XML.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	private static Parlamentar getParlamentarFromXML( int id ) {
+		try {
+			String url = "http://www.camara.leg.br/SitCamaraWS/Deputados.asmx/ObterDetalhesDeputado?ideCadastro=" + id + "&numLegislatura=";
+			
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			Document document = docBuilder.parse( new URL( url ).openStream() );
+			document.getDocumentElement().normalize();
+			
+			NodeList deputado = document.getElementsByTagName( "Deputado" );
+			Element element = (Element) deputado.item(0);
+			Element partido = (Element) element.getElementsByTagName( "partidoAtual" ).item(0);
+			
+			String nomeParlamentarAtual = element.getElementsByTagName( "nomeParlamentarAtual" ).item(0).getTextContent(),
+				   dataNascimento = element.getElementsByTagName( "dataNascimento" ).item(0).getTextContent(),
+				   partidoNome = partido.getElementsByTagName( "nome" ).item(0).getTextContent(),
+				   partidoSigla = partido.getElementsByTagName( "sigla" ).item(0).getTextContent(),
+				   sexo =  element.getElementsByTagName( "sexo" ).item(0).getTextContent(),
+				   situacaoNaLegislaturaAtual = element.getElementsByTagName( "situacaoNaLegislaturaAtual" ).item(0).getTextContent();
+			
+			parlamentar = new Parlamentar();
+			parlamentar.setId( id );
+			parlamentar.setNomeParlamentarAtual( nomeParlamentarAtual );
+			parlamentar.setDataNascimento( dataNascimento );
+			parlamentar.setPartidoAtual( partidoNome + " - " + partidoSigla );
+			parlamentar.setSexo( sexo );
+			parlamentar.setSituacaoNaLegislaturaAtual( situacaoNaLegislaturaAtual );
+			parlamentar.setFoto( "" );
+			
+			/**
+			 * Cadastrar parlamentar na base de dados.
+			 */
+			try {
+				// ( id, nomeParlamentarAtual, dataNascimento, sexo, partidoAtual, situacaoNaLegislaturaAtual, foto )
+				JSONObject config = Utils.getConfig( "DBConnection" );
+				Connection conn = new Conn( config.getString( "dbName" ), config.getString( "user" ), config.getString( "password" ), config.getString( "host" ), config.getInt( "port" ) ).getConnection();
+				PreparedStatement stm = conn.prepareStatement( "INSERT INTO parlamentares VALUES ( ?, ?, ?, ?, ?, ?, ? )" );
+				
+				stm.setInt( 1, id );
+				stm.setString( 2, nomeParlamentarAtual );
+				stm.setString( 3, dataNascimento );
+				stm.setString( 4, sexo );
+				stm.setString( 5, ( partidoSigla + " - " + partidoNome ) );
+				stm.setString( 6, situacaoNaLegislaturaAtual );
+				stm.setString( 7, "" );
+				
+				stm.executeUpdate();
+			} catch (Exception e) {
+				System.out.println( "Error -> " + e.getMessage() + "; " + Utils.class.getCanonicalName() + ".getParlamentarFromXML();" );
+			}
+			
+			return parlamentar;
+		}catch( Exception e ) {
+			System.out.println( "Error -> " + e.getMessage() + "; " + Utils.class.getCanonicalName() + ".getParlamentarFromXML();" );
+			return null;
+		}
 	}
 }
