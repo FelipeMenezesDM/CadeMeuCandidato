@@ -235,13 +235,68 @@ table.list tfoot h4 {
 }
 
 
+/* CARDS */
+.card {
+	background: #FFF;
+	border-radius: 4px;
+	padding: 25px;
+	margin: 0 auto;
+	max-width: 350px;
+	box-shadow: 0 3px 3px rgba(0,0,0,0.1);
+}
+
+.picture {
+	width: 114px;
+	height: 152px;
+	border: 1px solid #DDD;
+	margin: 0 auto;
+}
+
+.poker-chip {
+	margin: 30px 0;
+}
+
+.back-link a {
+	display: block;
+	width: 70px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+table.info {
+	border-collapse: collapse;
+	width: 100%;
+	color: #666;
+}
+
+table.info th,
+table.info td {
+	padding: 0 5px 10px 5px;
+	font-size: 14px;
+	vertical-align: top;
+	width: 50%;
+}
+
+table.info th {
+	text-align: right;
+	color: #444;
+}
+
+h4.no-exists {
+	color: #AAA;
+	max-width: 400px;
+	text-align: center;
+	margin: 20px auto;
+	padding: 30px 0;
+}
+
 /* RODAPE */
 .footer {
 	font-size: 12px;
 	text-align: center;
 	padding: 10px 20px;
 	margin-top: 20px;
-	color: #666;
+	color: #999;
 }
 
 

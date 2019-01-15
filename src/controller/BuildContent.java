@@ -157,6 +157,8 @@ public class BuildContent {
 				// Armazenar informações do parlamentar em cache.
 				parlamentares.put( id, parlamentar );
 				session.setAttribute( "parlamentares" , parlamentares );
+				
+				return parlamentar;
 			}
 			
 			conn.close();
@@ -226,7 +228,7 @@ public class BuildContent {
 			parlamentar.setId( id );
 			parlamentar.setNomeParlamentarAtual( nomeParlamentarAtual );
 			parlamentar.setDataNascimento( dataNascimento );
-			parlamentar.setPartidoAtual( partidoNome + " - " + partidoSigla );
+			parlamentar.setPartidoAtual( partidoSigla + " - " + partidoNome );
 			parlamentar.setSexo( sexo );
 			parlamentar.setSituacaoNaLegislaturaAtual( situacaoNaLegislaturaAtual );
 			parlamentar.setFoto( "" );
