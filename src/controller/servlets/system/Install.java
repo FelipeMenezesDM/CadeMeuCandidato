@@ -195,6 +195,8 @@ public class Install extends HttpServlet {
 		
 		if( password.isEmpty() )
 			errors.put( "password", "Você deve preencher este campo obrigatório." );
+		else if( !email.contains( "@" ) )
+			errors.put( "email", "Formato de e-mail inválido." );
 		
 		if( rtPassword.isEmpty() )
 			errors.put( "rtPassword", "Você deve preencher este campo obrigatório." );

@@ -80,6 +80,8 @@ public class Signup extends HttpServlet {
 		
 		if( email.isEmpty() )
 			errors.put( "email", "Você deve preencher este campo obrigatório." );
+		else if( !email.contains( "@" ) )
+			errors.put( "email", "Formato de e-mail inválido." );
 		
 		if( password.isEmpty() )
 			errors.put( "password", "Você deve preencher este campo obrigatório." );
