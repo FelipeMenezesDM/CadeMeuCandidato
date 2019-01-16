@@ -49,79 +49,81 @@
 	</form>
 </div>
 
-<table class="list">
-	<thead>
-		<tr>
-			<th width="1%">#</th>
-			<th>Nome</th>
-			<th width="15%" class="center">Partido</th>
-			<th width="15%" class="center">UF</th>
-			<th width="15%" class="center"><i class="fas fa-cog"></i></th>
-		</tr>
-	</thead>
-	<tbody>
-	<%
-		int currentPage = Utils.getCurrentPage( request );
-		// Obter lista de parlamentares.
-		JSONObject parlamentaresJSON = BuildContent.getParlamentares();
-		JSONArray parlamentares = (JSONArray) parlamentaresJSON.get( "dados" );
-		JSONObject p;
-		
-		if( parlamentares.isEmpty() ) {
-			out.print( "<tr><td colspan=\"5\" class=\"center\">Não há dados para exibição</td></tr>" );
-		}else{
-			int index = ( currentPage - 1 ) * 5;
+<div class="list-wrapper">
+	<table class="list">
+		<thead>
+			<tr>
+				<th width="1%">#</th>
+				<th>Nome</th>
+				<th width="15%" class="center">Partido</th>
+				<th width="15%" class="center">UF</th>
+				<th width="15%" class="center"><i class="fas fa-cog"></i></th>
+			</tr>
+		</thead>
+		<tbody>
+		<%
+			int currentPage = Utils.getCurrentPage( request );
+			// Obter lista de parlamentares.
+			JSONObject parlamentaresJSON = BuildContent.getParlamentares();
+			JSONArray parlamentares = (JSONArray) parlamentaresJSON.get( "dados" );
+			JSONObject p;
 			
-			for( Object parlamentar : parlamentares ) {
-				p = (JSONObject) parlamentar; 
+			if( parlamentares.isEmpty() ) {
+				out.print( "<tr><td colspan=\"5\" class=\"center\">Não há dados para exibição</td></tr>" );
+			}else{
+				int index = ( currentPage - 1 ) * 5;
 				
-				out.print("<tr>");
-				out.print("<td>" + ( ++index ) + "</td>");
-				out.print("<td>" + p.getString( "nome" ) + "</td>");
-				out.print("<td class=\"center\">" + p.getString( "siglaPartido" ) + "</td>");
-				out.print("<td class=\"center\">" + p.getString( "siglaUf" ) + "</td>");
-				out.print("<td class=\"center\"><a href=\"?p=consultar&id=" + p.getInt( "id" ) + "\" class=\"button\">Detalhar</a></td>");
-				out.print("</tr>");
-			}
-		}
-	%>
-	</tbody>
-	<tfoot>
-		<tr>
-			<td colspan="5">
-			<%
-				JSONArray links = (JSONArray) parlamentaresJSON.get( "links" );
-				boolean issetNextPage = false, issetPrevPage = false;
-			
-				// Verificar se página existem.
-				for( Object link : links ) {
-					String rel = ((JSONObject) link).getString( "rel" );
+				for( Object parlamentar : parlamentares ) {
+					p = (JSONObject) parlamentar; 
 					
-					if( rel.equals( "next" ) )
-						issetNextPage = true;
-					else if( rel.equals( "previous" ) )
-						issetPrevPage = true;
+					out.print("<tr>");
+					out.print("<td>" + ( ++index ) + "</td>");
+					out.print("<td>" + p.getString( "nome" ) + "</td>");
+					out.print("<td class=\"center\">" + p.getString( "siglaPartido" ) + "</td>");
+					out.print("<td class=\"center\">" + p.getString( "siglaUf" ) + "</td>");
+					out.print("<td class=\"center\"><a href=\"?p=consultar&id=" + p.getInt( "id" ) + "\" class=\"button\">Detalhar</a></td>");
+					out.print("</tr>");
 				}
+			}
+		%>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="5">
+				<%
+					JSONArray links = (JSONArray) parlamentaresJSON.get( "links" );
+					boolean issetNextPage = false, issetPrevPage = false;
 				
-				// Página anterior.
-				if( issetPrevPage ) {
-					out.print( "<a href=\"" + Utils.addQuery( "pagina", ( currentPage - 1 ) + "", request ) + "\" class=\"pages prev\"><i class=\"fas fa-arrow-left\"></i></a>" );
-				}else{
-					out.print( "<span class=\"pages prev\"><i class=\"fas fa-arrow-left\"></i></span>" );
-				}
-				
-				// Próxima página
-				if( issetNextPage ) {
-					out.print( "<a href=\"" + Utils.addQuery( "pagina", ( currentPage + 1 ) + "", request ) + "\" class=\"pages next\"><i class=\"fas fa-arrow-right\"></i></a>" );
-				}else{
-					out.print( "<span class=\"pages next\"><i class=\"fas fa-arrow-right\"></i></span>" );
-				}
-				
-				// Mostrar página atual.
-				if( !parlamentares.isEmpty() )
-					out.print( "<h4>Página " + currentPage + "</h4>" );
-			%>
-			</td>
-		</th>
-	</tfoot>
-</table>
+					// Verificar se página existem.
+					for( Object link : links ) {
+						String rel = ((JSONObject) link).getString( "rel" );
+						
+						if( rel.equals( "next" ) )
+							issetNextPage = true;
+						else if( rel.equals( "previous" ) )
+							issetPrevPage = true;
+					}
+					
+					// Página anterior.
+					if( issetPrevPage ) {
+						out.print( "<a href=\"" + Utils.addQuery( "pagina", ( currentPage - 1 ) + "", request ) + "\" class=\"pages prev\"><i class=\"fas fa-arrow-left\"></i></a>" );
+					}else{
+						out.print( "<span class=\"pages prev\"><i class=\"fas fa-arrow-left\"></i></span>" );
+					}
+					
+					// Próxima página
+					if( issetNextPage ) {
+						out.print( "<a href=\"" + Utils.addQuery( "pagina", ( currentPage + 1 ) + "", request ) + "\" class=\"pages next\"><i class=\"fas fa-arrow-right\"></i></a>" );
+					}else{
+						out.print( "<span class=\"pages next\"><i class=\"fas fa-arrow-right\"></i></span>" );
+					}
+					
+					// Mostrar página atual.
+					if( !parlamentares.isEmpty() )
+						out.print( "<h4>Página " + currentPage + "</h4>" );
+				%>
+				</td>
+			</th>
+		</tfoot>
+	</table>
+</div>

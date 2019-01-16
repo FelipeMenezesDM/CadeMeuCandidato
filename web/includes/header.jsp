@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title><%= Utils.getTitle() %> | Cadê meu candidato?</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="image/x-icon" href="<%= Utils.getHomeUrl( request, "assets/img/favicon.png" ) %>" />
 	<link rel="stylesheet" href="<%= Utils.getHomeUrl( request, "assets/css/style-fields.css" ) %>" />
 	<link rel="stylesheet" href="<%= Utils.getHomeUrl( request, "assets/css/style.css" ) %>" />
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/solid.css" />

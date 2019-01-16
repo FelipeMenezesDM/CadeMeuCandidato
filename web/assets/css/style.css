@@ -198,6 +198,10 @@ a {
 }
 
 /* Registros */
+.list-wrapper {
+	overflow: auto;
+}
+
 table.list {
 	border-collapse: collapse;
 	width: 100%;
@@ -205,6 +209,7 @@ table.list {
 	box-shadow: 0 3px 3px rgba(0,0,0,0.1);
 	overflow: hidden;
 	background: #FFF;
+	min-width: 400px;
 }
 
 table.list thead {
